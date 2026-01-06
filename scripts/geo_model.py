@@ -1,22 +1,22 @@
-from merlin_utility import *
+from bird_utility import *
 import argparse
 
 #
 # Parse command line arguments
 #
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Run Merlin photo id")
-    parser.add_argument("--model_path", help="Path to the .tflite model", required=True)
-    parser.add_argument("--label_path", help="Path to the labels for the .tflite model", required=True)
-    parser.add_argument("--lat", help="Latitude for the location", required=True)
-    parser.add_argument("--lon", help="Longitude for the location", required=True)
+    parser = argparse.ArgumentParser(description="Run geo model")
+    parser.add_argument("--model", help="Path to the .tflite model", required=True)
+    parser.add_argument("--labels", help="Path to the labels for the .tflite model", required=True)
+    parser.add_argument("--latitude", help="Latitude for the location", required=True)
+    parser.add_argument("--longitude", help="Longitude for the location", required=True)
     parser.add_argument("--week", help="Week of the year", required=True)
     parser.add_argument("--top", help="Number of top results to display", type=int, default=25)
     args = parser.parse_args()
     return args
 
 #
-# Run the Merlin geo model
+# Run the geo model
 #
 def run_geo_model(model_path, lat, lon, week):
     interpreter = create_tflite_interpreter(model_path)
@@ -41,5 +41,5 @@ def print_results(results, label_path, top_n):
 
 
 args = parse_arguments()
-results = run_geo_model(args.model_path, args.lat, args.lon, args.week)
-print_results(results, args.label_path, args.top)
+results = run_geo_model(args.model, args.latitude, args.longitude, args.week)
+print_results(results, args.labels, args.top)

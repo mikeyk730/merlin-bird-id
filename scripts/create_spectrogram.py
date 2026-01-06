@@ -1,4 +1,4 @@
-from merlin_utility import *
+from bird_utility import *
 from PIL import Image
 from scipy.io import wavfile
 import argparse
@@ -12,10 +12,10 @@ hop_size = 128
 # Parse command line arguments
 #
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Run Merlin photo id")
-    parser.add_argument("--model_path", help="Path to the .tflite model", required=True)
-    parser.add_argument("--sound_path", help="Path to the sound file", required=True)
-    parser.add_argument("--output_path", help="Path to save the spectrogram image", required=True)
+    parser = argparse.ArgumentParser(description="Create a spectrogram for a .wav file")
+    parser.add_argument("--model", help="Path to the .tflite model", required=True)
+    parser.add_argument("--wav", help="Path to the .wav file", required=True)
+    parser.add_argument("--output_file", help="Path to save the spectrogram image", required=True)
     parser.add_argument("--invert", help="Invert the spectrogram image", action='store_true')
     parser.add_argument("--max_hops", help="Maximum number of hops to process", type=int, default=512)
     args = parser.parse_args()
@@ -44,7 +44,9 @@ def get_next_sample(samples):
 
 #
 # Generates the spectrogram for the supplied audio samples.
+#
 # The supplied model is used to generate the frequency data for each window.
+# Each iteration produces one column of the spectrogram.
 #
 def generate_spectrogram(model_path, samples):
     interpreter = create_tflite_interpreter(model_path)
@@ -56,7 +58,7 @@ def generate_spectrogram(model_path, samples):
         result = get_single_output(interpreter)
         data.append(result)
 
-    spectrogram = np.hstack(data)  # shape (N, 128) where N == number of iterations
+    spectrogram = np.hstack(data)
     return spectrogram
 
 #
@@ -68,7 +70,8 @@ def save_spectrogram_image(spectrogram, output_path, invert):
         img = PIL.ImageOps.invert(img)
     img.save(output_path)
 
+
 args = parse_arguments()
-samples = get_wav_samples(args.sound_path, args.max_hops)
-result = generate_spectrogram(args.model_path, samples)
-save_spectrogram_image(result, args.output_path, args.invert)
+samples = get_wav_samples(args.wav, args.max_hops)
+result = generate_spectrogram(args.model, samples)
+save_spectrogram_image(result, args.output_file, args.invert)

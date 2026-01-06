@@ -50,9 +50,9 @@ def load_labels_for_model(label_path):
 # This information comes from the Clements Checklist, https://www.birds.cornell.edu/clementschecklist/
 #
 def load_species_id_map():
-    taxa_csv_path = r"metadata\Clements_v2025-October-2025.csv"
-    taxa_map = {}
-    with open(taxa_csv_path, newline='', encoding='utf-8') as f:
+    path = r"metadata\Clements_v2025-October-2025.csv"
+    bird_names = {}
+    with open(path, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
         for row in reader:
             if not row:
@@ -60,13 +60,13 @@ def load_species_id_map():
             code = row[1].strip()
             name = row[6].strip() if len(row) > 1 else ""
             if code:
-                taxa_map[code] = name
-    taxa_map['bird1'] = 'Bird'
+                bird_names[code] = name
+    bird_names['bird1'] = 'Bird'
 
-    return taxa_map
+    return bird_names
 
 #
-# Load an image to pass into Merlin models
+# Load an image to pass into photo id and sound id models
 #
 def load_image_data(image_path, debug=False):
 
@@ -89,7 +89,7 @@ def print_results_impl(out, idxs, labels, species):
     for rank, i in enumerate(idxs, start=1):
         val = out[i] * 100.0
         code = labels[i]
-        name = species[code]
+        name = species[code] if code in species else ''
         print(f"{rank}. {val:.2f}% [{i} {code}] - {name}")
 
 #

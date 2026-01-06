@@ -1,20 +1,20 @@
-from merlin_utility import *
+from bird_utility import *
 import argparse
 
 #
 # Parse command line arguments
 #
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Run Merlin photo id")
-    parser.add_argument("--model_path", help="Path to the .tflite model", required=True)
-    parser.add_argument("--label_path", help="Path to the labels for the .tflite model", required=True)
-    parser.add_argument("--image_path", help="Path to the image to classify", required=True)
+    parser = argparse.ArgumentParser(description="Run photo id model")
+    parser.add_argument("--model", help="Path to the .tflite model", required=True)
+    parser.add_argument("--labels", help="Path to the labels for the .tflite model", required=True)
+    parser.add_argument("--image", help="Path to the image to classify", required=True)
     parser.add_argument("--threshold", help="Threshold for classification", type=float, default=0.1)
     args = parser.parse_args()
     return args
 
 #
-# Run the Merlin photo id model
+# Run the photo id model
 #
 def run_photo_id(model_path, image_path):
     interpreter = create_tflite_interpreter(model_path)
@@ -37,5 +37,5 @@ def print_results(results, label_path, threshold):
 
 
 args = parse_arguments()
-results = run_photo_id(args.model_path, args.image_path)
-print_results(results, args.label_path, args.threshold)
+results = run_photo_id(args.model, args.image)
+print_results(results, args.labels, args.threshold)
