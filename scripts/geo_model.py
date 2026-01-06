@@ -1,3 +1,20 @@
+#
+# Returns the likeliness of each bird species based on location and time of year
+#
+# Model expectations:
+#
+# The supplied geo model should take the following inputs:
+#   0: longitude (float32)
+#   1: week of year (float32)
+#   2: latitude (float32)
+#
+# It should return a list of probabilities (float32), one per species. The supplied labels
+# should map the output indices to species codes (e.g. 'amerob')
+#
+# Example:
+#   geo_model.py --model geo_model.tflite --labels geo_model.txt --latitude 37.7 --longitude -122.4 --week 23 --top 25
+#
+
 from bird_utility import *
 import argparse
 
