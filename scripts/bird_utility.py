@@ -43,14 +43,14 @@ def load_labels_for_model(label_path):
     return labels_list
 
 #
-# Load a mapping from species code to species name.
+# Load a mapping from species code to common name.
 #
 # e.g., 'amerob' -> 'American Robin'
 #
 # This information comes from the Clements Checklist, https://www.birds.cornell.edu/clementschecklist/
 #
-def load_species_id_map():
-    path = r"metadata\Clements_v2025-October-2025.csv"
+def load_common_names():
+    path = r"metadata/eBird-Clements_v2025-integrated-checklist-October-2025.csv"
     bird_names = {}
     with open(path, newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
@@ -61,7 +61,32 @@ def load_species_id_map():
             name = row[6].strip() if len(row) > 1 else ""
             if code:
                 bird_names[code] = name
-    bird_names['bird1'] = 'Bird'
+
+    bird_names['strher'] = 'Striated Heron'
+
+    return bird_names
+
+#
+# Load a mapping from species code to scientific name.
+#
+# e.g., 'amerob' -> 'Turdus migratorius'
+#
+# This information comes from the Clements Checklist, https://www.birds.cornell.edu/clementschecklist/
+#
+def load_scientific_names():
+    path = r"metadata/eBird-Clements_v2025-integrated-checklist-October-2025.csv"
+    bird_names = {}
+    with open(path, newline='', encoding='utf-8') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if not row:
+                continue
+            code = row[1].strip()
+            name = row[7].strip() if len(row) > 1 else ""
+            if code:
+                bird_names[code] = name
+
+    bird_names['strher'] = 'Butorides striata'
 
     return bird_names
 

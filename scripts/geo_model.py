@@ -50,7 +50,7 @@ def run_geo_model(model_path, lat, lon, week):
 #
 def print_results(results, label_path, top_n):
     labels = load_labels_for_model(label_path)
-    bird_names = load_species_id_map()
+    bird_names = load_common_names()
 
     print()
     print(f"Top results:")
