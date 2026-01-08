@@ -29,7 +29,7 @@ def run_photo_id(model_path, image_path):
 #
 def print_results(results, label_path, threshold):
     labels = load_labels_for_model(label_path)
-    bird_names = load_species_id_map()
+    bird_names = load_common_names()
 
     print()
     print(f"Results with confidence above {threshold*100.0}%:")
