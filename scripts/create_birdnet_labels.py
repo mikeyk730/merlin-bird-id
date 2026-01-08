@@ -5,7 +5,7 @@ import argparse
 # Parse command line arguments
 #
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Run sound id model")
+    parser = argparse.ArgumentParser(description="Create BirdNET labels")
     parser.add_argument("--labels", help="Path to the labels for the .tflite model", required=True)
     args = parser.parse_args()
     return args
